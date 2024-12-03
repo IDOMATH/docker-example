@@ -9,8 +9,15 @@ services:
     command: ["app"]
   db:
     image: "postgres"
+    restart: always
     environment:
+      POSTGRES_USER: postgres
       POSTGRES_PASSWORD: mysecretpassword
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -d $${POSTGRES_DB} -U $${POSTGRES_USER}"]
+      interval: 1s
+      timeout: 5s
+      retries: 10
     volumes:
       - pgdata:/var/lib/postgresql/data
 
