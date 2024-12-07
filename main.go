@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"strconv"
 	"time"
 
 	"github.com/IDOMATH/docker-example/db"
@@ -17,13 +18,14 @@ func main() {
 
 	router.HandleFunc("GET /", handleHome)
 	router.HandleFunc("POST /", handlePostData)
+	router.HandleFunc("PUT /{id}", handlePutData)
 
 	server := http.Server{
 		Addr:    ":8080",
 		Handler: router,
 	}
 
-	connectionString := fmt.Sprintf("host=%s port=%s dbname=%s user=%s password=%s sslmode=%s", "localhost", "5432", "postgres", "postgres", "mysecretpassword", "disable")
+	connectionString := fmt.Sprintf("host=%s port=%s dbname=%s user=%s password=%s sslmode=%s", "localhost", "5432", "docker-example", "postgres", "mysecretpassword", "disable")
 	postgresDb, err := db.ConnectSql(connectionString)
 	if err != nil {
 		log.Fatal(err)
@@ -41,4 +43,17 @@ func handleHome(w http.ResponseWriter, r *http.Request) {
 func handlePostData(w http.ResponseWriter, r *http.Request) {
 	DS.InsertData(time.Now().String())
 	w.Write([]byte("Entered"))
+}
+
+func handlePutData(w http.ResponseWriter, r *http.Request) {
+	id, err := strconv.Atoi(r.PathValue("id"))
+	if err != nil {
+		w.Write([]byte(fmt.Sprintf("error parsing id to int: %d", id)))
+	}
+	err = DS.UpdateData(db.Entry{Id: id, Data: time.Now().String()})
+	if err != nil {
+		w.Write([]byte(err.Error()))
+	}
+
+	w.Write([]byte("updated"))
 }
