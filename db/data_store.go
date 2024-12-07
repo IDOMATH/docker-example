@@ -36,6 +36,17 @@ func (s *DataStore) InsertData(entry string) (int, error) {
 	return newId, nil
 }
 
+func (s *DataStore) UpdateData(entry Entry) error {
+	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
+	defer cancel()
+
+	statement := `update data set data = $1 where id = $2`
+
+	_, err := s.Db.ExecContext(ctx, statement, entry.Data, entry.Id)
+
+	return err
+}
+
 func (s *DataStore) GetAllData() ([]Entry, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
 	defer cancel()
