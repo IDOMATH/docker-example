@@ -19,6 +19,7 @@ func main() {
 	router.HandleFunc("GET /", handleHome)
 	router.HandleFunc("POST /", handlePostData)
 	router.HandleFunc("PUT /{id}", handlePutData)
+	router.HandleFunc("DELETE /{id}", handleDeleteData)
 
 	server := http.Server{
 		Addr:    ":8080",
@@ -37,10 +38,13 @@ func main() {
 }
 
 func handleHome(w http.ResponseWriter, r *http.Request) {
+	fmt.Println("home")
 	w.Write([]byte("Welcome Home"))
 }
 
 func handlePostData(w http.ResponseWriter, r *http.Request) {
+	fmt.Println("posting...")
+	w.Header().Set("Access-Control-Allow-Origin", "*")
 	DS.InsertData(time.Now().String())
 	w.Write([]byte("Entered"))
 }
@@ -56,4 +60,17 @@ func handlePutData(w http.ResponseWriter, r *http.Request) {
 	}
 
 	w.Write([]byte("updated"))
+}
+
+func handleDeleteData(w http.ResponseWriter, r *http.Request) {
+	id, err := strconv.Atoi(r.PathValue("id"))
+	if err != nil {
+		w.Write([]byte(fmt.Sprintf("error parsing id to int: %d", id)))
+	}
+	err = DS.DeleteData(id)
+	if err != nil {
+		w.Write([]byte(err.Error()))
+	}
+
+	w.Write([]byte("deleted"))
 }

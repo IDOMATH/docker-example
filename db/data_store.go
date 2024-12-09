@@ -89,3 +89,15 @@ func (s *DataStore) GetDataById(id int) (Entry, error) {
 
 	return data, nil
 }
+
+func (s *DataStore) DeleteData(id int) error {
+	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
+	defer cancel()
+
+	var data Entry
+	query := `delete from data where id = $1`
+
+	err := s.Db.QueryRowContext(ctx, query, id).Scan(data)
+	return err
+
+}
