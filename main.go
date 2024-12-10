@@ -16,7 +16,7 @@ func main() {
 	fmt.Println("Hello world")
 	router := http.NewServeMux()
 
-	router.HandleFunc("GET /", handleHome)
+	router.HandleFunc("GET /", setHeaders(handleHome))
 	router.HandleFunc("POST /", handlePostData)
 	router.HandleFunc("PUT /{id}", handlePutData)
 	router.HandleFunc("DELETE /{id}", handleDeleteData)
@@ -37,6 +37,14 @@ func main() {
 	log.Fatal(server.ListenAndServe())
 }
 
+func setHeaders(next http.HandlerFunc) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Access-Control-Allow-Origin", "*")
+		w.Write([]byte("headers set"))
+		next(w, r)
+	}
+}
+
 func handleHome(w http.ResponseWriter, r *http.Request) {
 	fmt.Println("home")
 	w.Write([]byte("Welcome Home"))
@@ -44,7 +52,6 @@ func handleHome(w http.ResponseWriter, r *http.Request) {
 
 func handlePostData(w http.ResponseWriter, r *http.Request) {
 	fmt.Println("posting...")
-	w.Header().Set("Access-Control-Allow-Origin", "*")
 	DS.InsertData(time.Now().String())
 	w.Write([]byte("Entered"))
 }
