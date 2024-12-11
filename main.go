@@ -18,6 +18,7 @@ func main() {
 
 	router.HandleFunc("GET /", setHeaders(handleHome))
 	router.HandleFunc("POST /", handlePostData)
+	router.HandleFunc("OPTIONS /", handlePreflight)
 	router.HandleFunc("PUT /{id}", handlePutData)
 	router.HandleFunc("DELETE /{id}", handleDeleteData)
 
@@ -43,6 +44,10 @@ func setHeaders(next http.HandlerFunc) http.HandlerFunc {
 		w.Write([]byte("headers set"))
 		next(w, r)
 	}
+}
+
+func handlePreflight(w http.ResponseWriter, r *http.Request) {
+	fmt.Println([]byte("options"))
 }
 
 func handleHome(w http.ResponseWriter, r *http.Request) {
