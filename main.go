@@ -19,6 +19,7 @@ func main() {
 	router.HandleFunc("GET /", setHeaders(handleHome))
 	router.HandleFunc("POST /", handlePostData)
 	router.HandleFunc("OPTIONS /", handlePreflight)
+	router.HandleFunc("GET /{id}", handleGetById)
 	router.HandleFunc("PUT /{id}", handlePutData)
 	router.HandleFunc("DELETE /{id}", handleDeleteData)
 
@@ -59,6 +60,21 @@ func handlePostData(w http.ResponseWriter, r *http.Request) {
 	fmt.Println("posting...")
 	DS.InsertData(time.Now().String())
 	w.Write([]byte("Entered"))
+}
+
+func handleGetById(w http.ResponseWriter, r *http.Request) {
+	id, err := strconv.Atoi(r.PathValue("id"))
+	if err != nil {
+		w.Write([]byte("error parsing id"))
+		return
+	}
+	fmt.Println("getting by id")
+	entry, err := DS.GetDataById(id)
+	if err != nil {
+		w.Write([]byte(err.Error()))
+		return
+	}
+	w.Write([]byte(entry.Data))
 }
 
 func handlePutData(w http.ResponseWriter, r *http.Request) {
