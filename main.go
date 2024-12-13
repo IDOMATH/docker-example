@@ -81,10 +81,12 @@ func handlePutData(w http.ResponseWriter, r *http.Request) {
 	id, err := strconv.Atoi(r.PathValue("id"))
 	if err != nil {
 		w.Write([]byte(fmt.Sprintf("error parsing id to int: %d", id)))
+		return
 	}
 	err = DS.UpdateData(db.Entry{Id: id, Data: time.Now().String()})
 	if err != nil {
 		w.Write([]byte(err.Error()))
+		return
 	}
 
 	w.Write([]byte("updated"))
@@ -94,10 +96,12 @@ func handleDeleteData(w http.ResponseWriter, r *http.Request) {
 	id, err := strconv.Atoi(r.PathValue("id"))
 	if err != nil {
 		w.Write([]byte(fmt.Sprintf("error parsing id to int: %d", id)))
+		return
 	}
 	err = DS.DeleteData(id)
 	if err != nil {
 		w.Write([]byte(err.Error()))
+		return
 	}
 
 	w.Write([]byte("deleted"))
