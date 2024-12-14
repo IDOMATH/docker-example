@@ -28,11 +28,12 @@ func main() {
 		Handler: router,
 	}
 
-	connectionString := fmt.Sprintf("host=%s port=%s dbname=%s user=%s password=%s sslmode=%s", "localhost", "5432", "docker-example", "postgres", "mysecretpassword", "disable")
+	connectionString := fmt.Sprintf("host=%s port=%s dbname=%s user=%s password=%s sslmode=%s", "0.0.0.0", "5432", "docker-example", "postgres", "mysecretpassword", "disable")
 	postgresDb, err := db.ConnectSql(connectionString)
 	if err != nil {
 		log.Fatal(err)
 	}
+	fmt.Println("Connected to postgres on port 5432")
 	DS = *db.NewDataStore(postgresDb.Sql)
 
 	fmt.Println("Starting on port 8080")
