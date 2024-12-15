@@ -13,6 +13,13 @@ import (
 var DS db.DataStore
 
 func main() {
+	host := "localhost"
+	port := "5432"
+	dbname := "docker-example"
+	user := "postgres"
+	password := "mysecretpassword"
+	sslmode := "disable"
+
 	fmt.Println("Hello world")
 	router := http.NewServeMux()
 
@@ -28,7 +35,7 @@ func main() {
 		Handler: router,
 	}
 
-	connectionString := fmt.Sprintf("host=%s port=%s dbname=%s user=%s password=%s sslmode=%s", "0.0.0.0", "5432", "docker-example", "postgres", "mysecretpassword", "disable")
+	connectionString := fmt.Sprintf("host=%s port=%s dbname=%s user=%s password=%s sslmode=%s", host, port, dbname, user, password, sslmode)
 	postgresDb, err := db.ConnectSql(connectionString)
 	if err != nil {
 		log.Fatal(err)
