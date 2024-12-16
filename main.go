@@ -40,7 +40,7 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	fmt.Println("Connected to postgres on port 5432")
+	fmt.Println("Connected to postgres on port: ", port)
 	DS = *db.NewDataStore(postgresDb.Sql)
 
 	fmt.Println("Starting on port 8080")
