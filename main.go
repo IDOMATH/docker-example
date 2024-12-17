@@ -13,8 +13,10 @@ import (
 var DS db.DataStore
 
 func main() {
+	serverPort := ":8080"
+
 	host := "localhost"
-	port := "5432"
+	dbPort := "5432"
 	dbname := "docker-example"
 	user := "postgres"
 	password := "mysecretpassword"
@@ -31,19 +33,19 @@ func main() {
 	router.HandleFunc("DELETE /{id}", handleDeleteData)
 
 	server := http.Server{
-		Addr:    ":8080",
+		Addr:    serverPort,
 		Handler: router,
 	}
 
-	connectionString := fmt.Sprintf("host=%s port=%s dbname=%s user=%s password=%s sslmode=%s", host, port, dbname, user, password, sslmode)
+	connectionString := fmt.Sprintf("host=%s port=%s dbname=%s user=%s password=%s sslmode=%s", host, dbPort, dbname, user, password, sslmode)
 	postgresDb, err := db.ConnectSql(connectionString)
 	if err != nil {
 		log.Fatal(err)
 	}
-	fmt.Println("Connected to postgres on port: ", port)
+	fmt.Println("Connected to postgres on port: ", serverPort)
 	DS = *db.NewDataStore(postgresDb.Sql)
 
-	fmt.Println("Starting on port 8080")
+	fmt.Println("Starting on port ", serverPort)
 	log.Fatal(server.ListenAndServe())
 }
 
