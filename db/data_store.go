@@ -26,7 +26,7 @@ func (s *DataStore) InsertData(entry string) (int, error) {
 	defer cancel()
 
 	var newId int
-	statement := `insert into data $1`
+	statement := `insert into data (value) values $1 returning id`
 
 	err := s.Db.QueryRowContext(ctx, statement, entry).Scan(&newId)
 
