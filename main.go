@@ -15,7 +15,7 @@ var DS db.DataStore
 func main() {
 	serverPort := ":8080"
 
-	host := "localhost"
+	// host := "localhost"
 	dbPort := "5432"
 	dbname := "docker-example"
 	user := "postgres"
@@ -36,8 +36,8 @@ func main() {
 		Addr:    serverPort,
 		Handler: router,
 	}
-
-	connectionString := fmt.Sprintf("host=%s port=%s dbname=%s user=%s password=%s sslmode=%s", host, dbPort, dbname, user, password, sslmode)
+	connectionString := fmt.Sprintf("postgres://%s:%s@db:%s/%s?sslmode=%s", user, password, dbPort, dbname, sslmode)
+	// connectionString := fmt.Sprintf("host=%s port=%s dbname=%s user=%s password=%s sslmode=%s", host, dbPort, dbname, user, password, sslmode)
 	postgresDb, err := db.ConnectSql(connectionString)
 	if err != nil {
 		log.Fatal(err)
