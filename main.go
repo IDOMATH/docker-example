@@ -32,6 +32,8 @@ func main() {
 	router.HandleFunc("PUT /{id}", handlePutData)
 	router.HandleFunc("DELETE /{id}", handleDeleteData)
 
+	router.HandleFunc("GET /data", handleGetAllData)
+
 	server := http.Server{
 		Addr:    serverPort,
 		Handler: router,
@@ -100,6 +102,16 @@ func handlePutData(w http.ResponseWriter, r *http.Request) {
 	}
 
 	w.Write([]byte("updated"))
+}
+
+func handleGetAllData(w http.ResponseWriter, r *http.Request) {
+	data, err := DS.GetAllData()
+	if err != nil {
+		w.Write([]byte(err.Error()))
+	}
+	for _, datum := range data {
+		w.Write([]byte(datum.Data))
+	}
 }
 
 func handleDeleteData(w http.ResponseWriter, r *http.Request) {
