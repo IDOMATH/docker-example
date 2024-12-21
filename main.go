@@ -25,9 +25,8 @@ func main() {
 	fmt.Println("Hello world")
 	router := http.NewServeMux()
 
-	router.HandleFunc("GET /", setHeaders(handleHome))
+	router.HandleFunc("GET /", handleHome)
 	router.HandleFunc("POST /", handlePostData)
-	router.HandleFunc("OPTIONS /", handlePreflight)
 	router.HandleFunc("GET /{id}", handleGetById)
 	router.HandleFunc("PUT /{id}", handlePutData)
 	router.HandleFunc("DELETE /{id}", handleDeleteData)
@@ -49,18 +48,6 @@ func main() {
 
 	fmt.Println("Starting on port ", serverPort)
 	log.Fatal(server.ListenAndServe())
-}
-
-func setHeaders(next http.HandlerFunc) http.HandlerFunc {
-	return func(w http.ResponseWriter, r *http.Request) {
-		w.Header().Set("Access-Control-Allow-Origin", "*")
-		w.Write([]byte("headers set"))
-		next(w, r)
-	}
-}
-
-func handlePreflight(w http.ResponseWriter, r *http.Request) {
-	fmt.Println([]byte("options"))
 }
 
 func handleHome(w http.ResponseWriter, r *http.Request) {
