@@ -51,12 +51,10 @@ func main() {
 }
 
 func handleHome(w http.ResponseWriter, r *http.Request) {
-	fmt.Println("home")
 	w.Write([]byte("Welcome Home"))
 }
 
 func handlePostData(w http.ResponseWriter, r *http.Request) {
-	fmt.Println("posting...")
 	DS.InsertData(time.Now().String())
 	w.Write([]byte("Entered"))
 }
@@ -67,7 +65,6 @@ func handleGetById(w http.ResponseWriter, r *http.Request) {
 		w.Write([]byte("error parsing id"))
 		return
 	}
-	fmt.Println("getting by id")
 	entry, err := DS.GetDataById(id)
 	if err != nil {
 		w.Write([]byte(err.Error()))
