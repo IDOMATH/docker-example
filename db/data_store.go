@@ -40,7 +40,7 @@ func (s *DataStore) UpdateData(entry Entry) error {
 	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
 	defer cancel()
 
-	statement := `update data set data = $1 where id = $2`
+	statement := `update data set value = $1 where id = $2`
 
 	_, err := s.Db.ExecContext(ctx, statement, entry.Data, entry.Id)
 
