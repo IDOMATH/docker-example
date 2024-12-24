@@ -21,6 +21,17 @@ func NewDataStore(db *sql.DB) *DataStore {
 	}
 }
 
+func SeedDb() error {
+	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
+	defer cancel()
+
+	statement := `
+	CREATE TABLE data (
+    id serial PRIMARY KEY,
+    value VARCHAR(50)
+);`
+}
+
 func (s *DataStore) InsertData(entry string) (int, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
 	defer cancel()

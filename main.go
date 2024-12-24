@@ -30,6 +30,7 @@ func main() {
 	router.HandleFunc("GET /{id}", handleGetById)
 	router.HandleFunc("PUT /{id}", handlePutData)
 	router.HandleFunc("DELETE /{id}", handleDeleteData)
+	router.HandleFunc("POST /seed", handleSeed)
 
 	router.HandleFunc("GET /data", handleGetAllData)
 
