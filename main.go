@@ -55,6 +55,11 @@ func handleHome(w http.ResponseWriter, r *http.Request) {
 	w.Write([]byte("Welcome Home"))
 }
 
+func handleSeed(w http.ResponseWriter, r *http.Request) {
+	DS.Seed()
+	w.Write([]byte("Seeding db"))
+}
+
 func handlePostData(w http.ResponseWriter, r *http.Request) {
 	DS.InsertData(time.Now().String())
 	w.Write([]byte("Entered"))
