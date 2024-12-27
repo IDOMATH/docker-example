@@ -14,15 +14,12 @@ var DS db.DataStore
 
 func main() {
 	serverPort := ":8080"
-
-	// host := "localhost"
 	dbPort := "5432"
 	dbname := "docker-example"
 	user := "postgres"
 	password := "mysecretpassword"
 	sslmode := "disable"
 
-	fmt.Println("Hello world")
 	router := http.NewServeMux()
 
 	router.HandleFunc("GET /", handleHome)
@@ -31,7 +28,6 @@ func main() {
 	router.HandleFunc("PUT /{id}", handlePutData)
 	router.HandleFunc("DELETE /{id}", handleDeleteData)
 	router.HandleFunc("POST /seed", handleSeed)
-
 	router.HandleFunc("GET /data", handleGetAllData)
 
 	server := http.Server{
@@ -39,7 +35,7 @@ func main() {
 		Handler: router,
 	}
 	connectionString := fmt.Sprintf("postgres://%s:%s@db:%s/%s?sslmode=%s", user, password, dbPort, dbname, sslmode)
-	// connectionString := fmt.Sprintf("host=%s port=%s dbname=%s user=%s password=%s sslmode=%s", host, dbPort, dbname, user, password, sslmode)
+
 	postgresDb, err := db.ConnectSql(connectionString)
 	if err != nil {
 		log.Fatal(err)
