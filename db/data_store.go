@@ -40,6 +40,9 @@ func (s *DataStore) Seed() error {
 }
 
 func (s *DataStore) Drop() error {
+	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
+	defer cancel()
+
 	statement := `
 	DROP table data
 	`
