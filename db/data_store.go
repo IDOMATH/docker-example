@@ -46,6 +46,14 @@ func (s *DataStore) Drop() error {
 	statement := `
 	DROP table data
 	`
+
+	_, err := s.Db.ExecContext(ctx, statement)
+
+	if err != nil {
+		return err
+	}
+
+	return nil
 }
 
 func (s *DataStore) InsertData(entry string) (int, error) {
