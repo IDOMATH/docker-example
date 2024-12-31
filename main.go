@@ -54,12 +54,20 @@ func handleHome(w http.ResponseWriter, r *http.Request) {
 }
 
 func handleSeed(w http.ResponseWriter, r *http.Request) {
-	DS.Seed()
+	err := DS.Seed()
+	if err != nil {
+		w.Write([]byte("error seeding db"))
+		return
+	}
 	w.Write([]byte("Seeding db"))
 }
 
 func handleDrop(w http.ResponseWriter, r *http.Request) {
-	DS.Drop()
+	err := DS.Drop()
+	if err != nil {
+		w.Write([]byte("eror dropping db"))
+		return
+	}
 	w.Write([]byte("Dropping db"))
 }
 
