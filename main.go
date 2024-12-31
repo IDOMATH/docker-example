@@ -27,8 +27,10 @@ func main() {
 	router.HandleFunc("GET /{id}", handleGetById)
 	router.HandleFunc("PUT /{id}", handlePutData)
 	router.HandleFunc("DELETE /{id}", handleDeleteData)
-	router.HandleFunc("POST /seed", handleSeed)
 	router.HandleFunc("GET /data", handleGetAllData)
+
+	router.HandleFunc("POST /seed", handleSeed)
+	router.HandleFunc("POST /drop", handleDrop)
 
 	server := http.Server{
 		Addr:    serverPort,
@@ -54,6 +56,11 @@ func handleHome(w http.ResponseWriter, r *http.Request) {
 func handleSeed(w http.ResponseWriter, r *http.Request) {
 	DS.Seed()
 	w.Write([]byte("Seeding db"))
+}
+
+func handleDrop(w http.ResponseWriter, r *http.Request) {
+	DS.Drop()
+	w.Write([]byte("Dropping db"))
 }
 
 func handlePostData(w http.ResponseWriter, r *http.Request) {
