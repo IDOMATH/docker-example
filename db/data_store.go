@@ -21,7 +21,7 @@ func NewDataStore(db *sql.DB) *DataStore {
 	}
 }
 
-func (s *DataStore) Seed() error {
+func (s *DataStore) InitDb() error {
 	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
 	defer cancel()
 
