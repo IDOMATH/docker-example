@@ -29,7 +29,7 @@ func main() {
 	router.HandleFunc("DELETE /{id}", handleDeleteData)
 	router.HandleFunc("GET /data", handleGetAllData)
 
-	router.HandleFunc("POST /seed", handleSeed)
+	router.HandleFunc("POST /seed", handleInit)
 	router.HandleFunc("POST /drop", handleDrop)
 
 	server := http.Server{
