@@ -31,6 +31,7 @@ func main() {
 
 	router.HandleFunc("POST /seed", handleInit)
 	router.HandleFunc("POST /drop", handleDrop)
+	router.HandleFunc("POST /reset", handleResetDb)
 
 	server := http.Server{
 		Addr:    serverPort,
