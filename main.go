@@ -24,6 +24,7 @@ func main() {
 
 	router.HandleFunc("GET /", handleHome)
 	router.HandleFunc("POST /", handlePostData)
+
 	router.HandleFunc("GET /{id}", handleGetById)
 	router.HandleFunc("PUT /{id}", handlePutData)
 	router.HandleFunc("DELETE /{id}", handleDeleteData)

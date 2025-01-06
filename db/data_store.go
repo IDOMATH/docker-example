@@ -28,7 +28,7 @@ func (s *DataStore) InitDb() error {
 	statement := `
 	CREATE TABLE data (
     id serial PRIMARY KEY,
-    value VARCHAR(50));
+    value VARCHAR(50))
 	`
 
 	_, err := s.Db.ExecContext(ctx, statement)
@@ -43,9 +43,7 @@ func (s *DataStore) Drop() error {
 	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
 	defer cancel()
 
-	statement := `
-	DROP table data
-	`
+	statement := `DROP table data`
 
 	_, err := s.Db.ExecContext(ctx, statement)
 
