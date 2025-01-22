@@ -28,7 +28,7 @@ func (s *DataStore) InitDb() error {
 	statement := `
 	CREATE TABLE data (
     id serial PRIMARY KEY,
-    value VARCHAR(50))
+    value VARCHAR(255))
 	`
 
 	_, err := s.Db.ExecContext(ctx, statement)
@@ -59,7 +59,7 @@ func (s *DataStore) InsertData(entry string) (int, error) {
 	defer cancel()
 
 	var newId int
-	statement := `insert into data (value) values $1 returning id`
+	statement := `insert into data (value) values ($1) returning id`
 
 	err := s.Db.QueryRowContext(ctx, statement, entry).Scan(&newId)
 
@@ -85,7 +85,7 @@ func (s *DataStore) GetAllData() ([]Entry, error) {
 	defer cancel()
 
 	var data []Entry
-	query := `select * from data`
+	query := `select id, value from data`
 
 	rows, err := s.Db.QueryContext(ctx, query)
 	if err != nil {
@@ -95,7 +95,7 @@ func (s *DataStore) GetAllData() ([]Entry, error) {
 
 	for rows.Next() {
 		var datum Entry
-		err := rows.Scan(&datum)
+		err := rows.Scan(&datum.Id, &datum.Data)
 		if err != nil {
 			return data, err
 		}
