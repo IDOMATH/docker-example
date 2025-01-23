@@ -1,9 +1,9 @@
 services:
   web:
-    env_file: "dev.env"
+    env_file: "./dev.env"
     build: .
     ports:
-      - "8080:8080"
+      - "${EXPOSE_PORT}:${CONTAINER_PORT}"
     depends_on:
       db:
         condition: service_healthy
@@ -17,7 +17,7 @@ services:
       POSTGRES_PASSWORD: mysecretpassword
       POSTGRES_DB: docker-example
     expose:
-      - $EXPOSE_PORT
+      - ${DB_PORT}
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -d $${POSTGRES_DB} -U $${POSTGRES_USER}"]
       interval: 1s
