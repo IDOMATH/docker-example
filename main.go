@@ -8,16 +8,32 @@ import (
 	"time"
 
 	"github.com/IDOMATH/docker-example/db"
+	"github.com/IDOMATH/docker-example/util"
 )
 
 var DS db.DataStore
 
 func main() {
-	serverPort := ":8080"
-	dbPort := "5432"
-	dbname := "docker-example"
-	user := "postgres"
-	password := "mysecretpassword"
+	serverPort, err := util.EnvMust("CONTAINER_PORT") //":8080"
+	if err != nil {
+		panic(err.Error())
+	}
+	dbPort, err := util.EnvMust("DB_PORT") //"5432"
+	if err != nil {
+		panic(err.Error())
+	}
+	dbname, err := util.EnvMust("POSTGRES_DB") //"docker-example"
+	if err != nil {
+		panic(err.Error())
+	}
+	user, err := util.EnvMust("POSTGRES_USER") // "postgres"
+	if err != nil {
+		panic(err.Error())
+	}
+	password, err := util.EnvMust("POSTGRES_PASSWORD") // "mysecretpassword"
+	if err != nil {
+		panic(err.Error())
+	}
 	sslmode := "disable"
 
 	router := http.NewServeMux()
@@ -35,7 +51,7 @@ func main() {
 	router.HandleFunc("POST /reset", handleResetDb)
 
 	server := http.Server{
-		Addr:    serverPort,
+		Addr:    ":" + serverPort,
 		Handler: router,
 	}
 	connectionString := fmt.Sprintf("postgres://%s:%s@db:%s/%s?sslmode=%s", user, password, dbPort, dbname, sslmode)
@@ -129,7 +145,7 @@ func handleGetAllData(w http.ResponseWriter, r *http.Request) {
 		w.Write([]byte(err.Error()))
 	}
 	for _, datum := range data {
-		w.Write([]byte(datum.Data))
+		w.Write([]byte(datum.Data + "\n"))
 	}
 }
 
