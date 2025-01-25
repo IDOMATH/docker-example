@@ -1,6 +1,6 @@
 services:
   web:
-    env_file: "./dev.env"
+    env_file: "dev.env"
     build: .
     ports:
       - "${EXPOSE_PORT}:${CONTAINER_PORT}"
